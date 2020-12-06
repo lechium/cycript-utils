@@ -31,7 +31,26 @@
 	extern "C" int sysctlnametomib(const char *, int *, size_t *);
 
 	var log = x => NSLog(@"%s", x.toString());
-
+	utils.printMethods = function (className, isa) {
+  		var count = new new Type("I");
+  		var classObj = (isa != undefined) ? objc_getClass(className).constructor : objc_getClass(className);
+  		var methods = class_copyMethodList(classObj, count);
+  		var methodsArray = [];
+  		for(var i = 0; i < *count; i++) {
+    			var method = methods[i];
+    			methodsArray.push({selector:method_getName(method), implementation:method_getImplementation(method)});
+  		}
+  		free(methods);
+  		return methodsArray;
+	};
+	utils.createError = function(){
+		var error = new @encode(NSError *);
+		return error;
+	};
+	utils.CGPointMake = function(x, y) { return [x, y]; };
+	utils.CGRectMake = function(x, y, w, h) { return [[x, y], [w, h]]; };
+	utils.CGSizeMake = function(w, h) { return [w, h]; };
+	utils.tryPrintIvars = function tryPrintIvars(a){ var x={}; for(i in *a){ try{ x[i] = (*a)[i]; } catch(e){} } return x; }
 	/*
 		Aligns the pointer downwards, alignment must be a power of 2
 		Useful for mprotect
