@@ -43,6 +43,10 @@
   		free(methods);
   		return methodsArray;
 	};
+	utils.TopSettingView = function(){
+		var top = [UIApp keyWindow].rootViewController.navigationController.visibleViewController;
+		return top;
+	};
 	utils.createError = function(){
 		var error = new @encode(NSError *);
 		return error;
